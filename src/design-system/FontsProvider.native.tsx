@@ -1,14 +1,22 @@
 // Native-only font provider
 import React from "react";
 import { View, ActivityIndicator } from "react-native";
-import { useFonts, Urbanist_400Regular, Urbanist_600SemiBold } from "@expo-google-fonts/urbanist";
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+} from "@expo-google-fonts/inter";
 
 type FontsProviderProps = { children: React.ReactNode };
 
 export const FontsProvider: React.FC<FontsProviderProps> = ({ children }) => {
   const [fontsLoaded] = useFonts({
-    Urbanist_400Regular,
-    Urbanist_600SemiBold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
   });
 
   if (!fontsLoaded) {

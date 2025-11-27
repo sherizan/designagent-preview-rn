@@ -80,7 +80,13 @@ export const TextInput: React.FC<TextInputProps> = ({
             fontSize: theme.typography.body.fontSize,
             lineHeight: theme.typography.body.lineHeight ?? theme.typography.body.fontSize * 1.4,
             height: pill ? baseButtonHeight.lg : undefined,
-            fontFamily: theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase,
+            fontFamily: Platform.OS === "web"
+              ? (theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase) === "Inter"
+                ? "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+                : (theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase)
+              : (theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase) === "Inter"
+                ? "Inter_400Regular"
+                : (theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase),
           }}
           {...props}
         />

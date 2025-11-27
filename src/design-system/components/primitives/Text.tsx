@@ -22,25 +22,49 @@ export const DAText: React.FC<DATextProps> = ({
   const { typography } = theme;
   
   const getFontFamily = () => {
+    const baseFont = typography.fontFamilyBase;
+    
+    // If a specific fontFamily is set, use it
+    let fontFamily: string | undefined;
     switch (variant) {
       case "heading":
       case "eyebrow":
-        return (
-          typography.heading.fontFamily ??
-          typography.fontFamilyBase
-        );
+        fontFamily = typography.heading.fontFamily ?? baseFont;
+        break;
       case "caption":
-        return (
-          typography.label.fontFamily ??
-          typography.fontFamilyBase
-        );
+        fontFamily = typography.label.fontFamily ?? baseFont;
+        break;
       case "body":
       default:
-        return (
-          typography.body.fontFamily ??
-          typography.fontFamilyBase
-        );
+        fontFamily = typography.body.fontFamily ?? baseFont;
+        break;
     }
+    
+    // On native, map Inter to the correct Expo font keys
+    if (Platform.OS !== "web") {
+      if (fontFamily === "Inter" || fontFamily?.startsWith("Inter")) {
+        switch (variant) {
+          case "heading":
+            return "Inter_600SemiBold";
+          case "eyebrow":
+            return "Inter_600SemiBold";
+          case "caption":
+            return "Inter_400Regular";
+          case "body":
+          default:
+            return "Inter_400Regular";
+        }
+      }
+      // If custom fontFamily is provided, use it as-is
+      return fontFamily;
+    }
+    
+    // On web, use Inter with system font fallbacks
+    if (fontFamily === "Inter") {
+      return "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    }
+    
+    return fontFamily;
   };
 
   const getFontSize = () => {

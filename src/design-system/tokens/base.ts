@@ -68,7 +68,7 @@ export const baseIconSize = {
 import type { TypographySlot } from "./types";
 
 export const baseTypography = {
-  fontFamilyBase: "Urbanist",
+  fontFamilyBase: "Inter",
   heading: {
     fontFamily: undefined, // if undefined, use fontFamilyBase
     fontSize: 24,
