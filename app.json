@@ -28,6 +28,7 @@
       "bundler": "metro",
       "output": "static"
     },
+    "scheme": "designagent-preview",
     "plugins": [
       "expo-router"
     ]
