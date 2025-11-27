@@ -6,4 +6,6 @@ export { TextInput } from "./TextInput";
 export { Card } from "./Card";
 export { SocialButton } from "./SocialButton";
 export { Divider } from "./Divider";
+export { Icon } from "./Icon";
+export type { IconLibrary, IconProps } from "./Icon";
 

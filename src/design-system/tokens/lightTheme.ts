@@ -1,8 +1,8 @@
-import { baseSpacing, baseRadius, baseBorderWidth, baseButtonHeight, baseIconSize, baseTypography } from "./base";
-import { DesignTheme } from "./themes";
+import type { DesignAgentTheme } from "./types";
+import { baseSpacing, baseRadius, baseTypography } from "./base";
 
 // Light theme for login-simple screen
-export const lightTheme: DesignTheme = {
+export const lightTheme: DesignAgentTheme = {
   colors: {
     background: "#FFFFFF",
     surface: "#FFFFFF",
@@ -17,9 +17,6 @@ export const lightTheme: DesignTheme = {
   },
   spacing: baseSpacing,
   radius: baseRadius,
-  borderWidth: baseBorderWidth,
-  buttonHeight: baseButtonHeight,
-  iconSize: baseIconSize,
   typography: baseTypography,
 };
 

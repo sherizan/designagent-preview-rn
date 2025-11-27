@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, ViewStyle, ActivityIndicator, StyleSheet } from "react-native";
 import { useTheme } from "../../theme";
+import { baseBorderWidth, baseButtonHeight } from "../../tokens/base";
 import { DAText } from "./Text";
 
 type ButtonVariant = "primary" | "ghost" | "black";
@@ -62,9 +63,9 @@ export const Button: React.FC<ButtonProps> = ({
         {
           backgroundColor: getBackgroundColor(),
           borderColor: getBorderColor(),
-          borderWidth: isPrimary ? 0 : theme.borderWidth.sm,
+          borderWidth: isPrimary ? 0 : baseBorderWidth.sm,
           borderRadius: theme.radius.full,
-          height: theme.buttonHeight.lg,
+          height: baseButtonHeight.lg,
           paddingVertical: theme.spacing.sm,
           paddingHorizontal: theme.spacing.lg,
           alignItems: "center",

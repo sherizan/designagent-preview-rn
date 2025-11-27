@@ -1,6 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { Redirect, useLocalSearchParams } from "expo-router";
+import { screens, ScreenKey } from "../src/screens/registry";
 import {
   DesignAgentProvider,
   DesignAgentProviderMode,
@@ -9,24 +10,36 @@ import {
   designAgentThemes,
   ThemeKey,
 } from "../src/design-system/themes/registry";
-import { screens } from "../src/screens/registry";
 
+const DEFAULT_SCREEN: ScreenKey = "login-simple";
 const DEFAULT_THEME: ThemeKey = "midnight";
 const DEFAULT_MODE: DesignAgentProviderMode = "dark";
 
-export default function LoginHeroRoute() {
+export default function ScreenRoute() {
   const params = useLocalSearchParams<{
+    slug?: string | string[];
     theme?: string | string[];
     mode?: string | string[];
   }>();
 
   // Handle expo-router params which can be string or string[]
+  const slug = Array.isArray(params.slug)
+    ? params.slug[0]
+    : (params.slug as string | undefined);
   const themeParamFromRouter = Array.isArray(params.theme)
     ? params.theme[0]
     : (params.theme as string | undefined);
   const modeParamFromRouter = Array.isArray(params.mode)
     ? params.mode[0]
     : (params.mode as string | undefined);
+
+  const screenKey: ScreenKey = (slug as ScreenKey) || DEFAULT_SCREEN;
+
+  if (!screenKey || !(screenKey in screens)) {
+    return <Redirect href={`/${DEFAULT_SCREEN}`} />;
+  }
+
+  const ActiveScreen = screens[screenKey];
 
   // On web, read directly from URL for more reliable query param reading
   const getThemeKey = (): ThemeKey => {
@@ -74,11 +87,10 @@ export default function LoginHeroRoute() {
 
   const themeKey = getThemeKey();
   const mode = getMode();
-  const Screen = screens["login-hero"];
 
   return (
     <DesignAgentProvider key={`${themeKey}-${mode}`} themeId={themeKey} mode={mode}>
-      <Screen />
+      <ActiveScreen />
     </DesignAgentProvider>
   );
 }

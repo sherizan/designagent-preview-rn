@@ -1,8 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { FontsProvider } from "./src/design-system/FontsProvider";
-import { ThemeProvider } from "./src/design-system/ThemeContext";
-import { midnightTheme } from "./src/design-system/tokens/themes";
+import { DesignAgentProvider } from "./src/design-system/theme";
 import { screens, ScreenKey } from "./src/screens/registry";
 
 const DEFAULT_SCREEN: ScreenKey = "login-simple";
@@ -34,9 +33,9 @@ export default function App() {
 
   return (
     <FontsProvider>
-      <ThemeProvider theme={midnightTheme}>
+      <DesignAgentProvider>
         <ActiveScreen />
-      </ThemeProvider>
+      </DesignAgentProvider>
     </FontsProvider>
   );
 }

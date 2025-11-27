@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { TextInput as RNTextInput, TextInputProps as RNTextInputProps, View, ViewStyle, Platform, Pressable } from "react-native";
-import { Eye, EyeOff } from "lucide-react-native";
 import { useTheme } from "../../theme";
+import { baseBorderWidth, baseButtonHeight, baseIconSize } from "../../tokens/base";
 import { DAText } from "./Text";
+import { Icon } from "./Icon";
 
 interface TextInputProps extends Omit<RNTextInputProps, "style"> {
   label?: string;
@@ -38,7 +39,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 
   const borderColor = error ? theme.colors.danger : isFocused ? theme.colors.primary : theme.colors.border;
   const borderRadius = pill ? theme.radius.full : theme.radius.md;
-  const borderWidth = pill ? theme.borderWidth.md : theme.borderWidth.sm;
+  const borderWidth = pill ? baseBorderWidth.md : baseBorderWidth.sm;
   
   // Slightly lighter background on focus
   const inputBackground = isFocused 
@@ -77,7 +78,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             paddingRight: showPasswordToggle ? 50 : undefined,
             color: theme.colors.text,
             fontSize: 16,
-            height: pill ? theme.buttonHeight.lg : undefined,
+            height: pill ? baseButtonHeight.lg : undefined,
             fontFamily: Platform.OS === "web" 
               ? "Urbanist, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
               : "Urbanist_400Regular",
@@ -95,11 +96,12 @@ export const TextInput: React.FC<TextInputProps> = ({
               padding: theme.spacing.xs,
             }}
           >
-            {isPasswordVisible ? (
-              <EyeOff size={theme.iconSize.md} color={theme.colors.textMuted} />
-            ) : (
-              <Eye size={theme.iconSize.md} color={theme.colors.textMuted} />
-            )}
+            <Icon
+              library="lucide"
+              name={isPasswordVisible ? "EyeOff" : "Eye"}
+              size={baseIconSize.md}
+              color={theme.colors.textMuted}
+            />
           </Pressable>
         )}
       </View>

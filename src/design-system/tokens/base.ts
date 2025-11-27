@@ -1,9 +1,43 @@
+import { Platform } from "react-native";
+
+/**
+ * SPACING TOKENS - Edit these values to adjust spacing across your app
+ * 
+ * All spacing in your components uses these tokens via theme.spacing
+ * Examples: theme.spacing.xs, theme.spacing.sm, theme.spacing.md, etc.
+ * 
+ * To adjust spacing:
+ * 1. Edit the baseSpacingValues below to change the base spacing scale
+ * 2. Adjust spacingMultiplier to fine-tune iOS vs Android differences
+ *    - Set to 1.0 for both platforms to have identical spacing
+ *    - iOS typically benefits from slightly more spacing (1.0-1.05)
+ *    - Android can use slightly less (0.95-1.0)
+ * 
+ * All components using theme.spacing will automatically update when you change these values.
+ */
+
+// Base spacing scale - edit these values to change spacing across your app
+// These align with DesignAgentTheme.spacing
+const baseSpacingValues = {
+  xs: 4,    // Extra small spacing (e.g., between icon and text)
+  sm: 8,    // Small spacing (e.g., between form fields)
+  md: 12,   // Medium spacing (e.g., between sections)
+  lg: 16,   // Large spacing (e.g., card padding)
+  xl: 24,   // Extra large spacing (e.g., between major sections)
+} as const;
+
+// Platform multiplier: Adjust to fine-tune iOS vs Android spacing differences
+// Set both to 1.0 if you want identical spacing on both platforms
+const spacingMultiplier = Platform.OS === "ios" ? 1.0 : 0.95;
+
+// Apply platform multiplier (optional - remove if you want identical spacing)
+// This exports the spacing values that match DesignAgentTheme
 export const baseSpacing = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
+  xs: Math.round(baseSpacingValues.xs * spacingMultiplier),
+  sm: Math.round(baseSpacingValues.sm * spacingMultiplier),
+  md: Math.round(baseSpacingValues.md * spacingMultiplier),
+  lg: Math.round(baseSpacingValues.lg * spacingMultiplier),
+  xl: Math.round(baseSpacingValues.xl * spacingMultiplier),
 } as const;
 
 export const baseRadius = {

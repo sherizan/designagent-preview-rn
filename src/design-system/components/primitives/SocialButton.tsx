@@ -1,12 +1,14 @@
 import React from "react";
-import { Pressable, ViewStyle, View, Image, ImageSourcePropType } from "react-native";
+import { Pressable, ViewStyle } from "react-native";
 import { useTheme } from "../../theme";
+import { baseBorderWidth, baseButtonHeight } from "../../tokens/base";
 import { DAText } from "./Text";
+import { Icon, IconLibrary } from "./Icon";
 
 interface SocialButtonProps {
   title: string;
   onPress: () => void;
-  icon?: string | ImageSourcePropType; // URL string or local asset
+  iconLibrary?: IconLibrary; // Icon library to use (e.g., "google", "apple", "facebook")
   disabled?: boolean;
   style?: ViewStyle;
 }
@@ -14,7 +16,7 @@ interface SocialButtonProps {
 export const SocialButton: React.FC<SocialButtonProps> = ({
   title,
   onPress,
-  icon,
+  iconLibrary,
   disabled = false,
   style,
 }) => {
@@ -28,9 +30,9 @@ export const SocialButton: React.FC<SocialButtonProps> = ({
         {
           backgroundColor: theme.colors.inputBackground,
           borderColor: theme.colors.border,
-          borderWidth: theme.borderWidth.md,
+          borderWidth: baseBorderWidth.md,
           borderRadius: theme.radius.full,
-          height: theme.buttonHeight.lg,
+          height: baseButtonHeight.lg,
           paddingVertical: theme.spacing.md,
           paddingHorizontal: theme.spacing.lg,
           alignItems: "center",
@@ -43,11 +45,11 @@ export const SocialButton: React.FC<SocialButtonProps> = ({
         style,
       ]}
     >
-      {icon && (
-        <Image
-          source={typeof icon === "string" ? { uri: icon } : icon}
-          style={{ width: theme.iconSize.md, height: theme.iconSize.md }}
-          resizeMode="contain"
+      {iconLibrary && (
+        <Icon
+          library={iconLibrary}
+          size={20}
+          color={iconLibrary === "google" ? undefined : theme.colors.text}
         />
       )}
       <DAText variant="body" style={{ color: theme.colors.text }}>

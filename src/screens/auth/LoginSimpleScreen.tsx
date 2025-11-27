@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Pressable, ScrollView, Image } from "react-native";
-import { lightTheme } from "../../design-system/tokens/lightTheme";
-import { ThemeProvider } from "../../design-system/ThemeContext";
+import { View, Pressable, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { FormField } from "../../design-system/components/patterns/FormField";
 import { Button } from "../../design-system/components/primitives/Button";
 import { SocialButton } from "../../design-system/components/primitives/SocialButton";
@@ -9,7 +8,7 @@ import { Divider } from "../../design-system/components/primitives/Divider";
 import { DAText } from "../../design-system/components/primitives/Text";
 import { useTheme } from "../../design-system/theme";
 
-const LoginSimpleScreenContent: React.FC = () => {
+export const LoginSimpleScreen: React.FC = () => {
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,16 +36,17 @@ const LoginSimpleScreenContent: React.FC = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: theme.colors.background,
-        alignItems: "center",
-        paddingTop: theme.spacing.xl * 2,
-        paddingBottom: theme.spacing.xl,
-        paddingHorizontal: theme.spacing.lg,
-      }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          backgroundColor: theme.colors.background,
+          alignItems: "center",
+          paddingTop: theme.spacing.xl * 2,
+          paddingBottom: theme.spacing.xl,
+          paddingHorizontal: theme.spacing.lg,
+        }}
+      >
       {/* Header */}
       <View
         style={{
@@ -71,7 +71,7 @@ const LoginSimpleScreenContent: React.FC = () => {
       </View>
 
       {/* Form */}
-      <View style={{ width: "100%", maxWidth: 327, gap: theme.spacing.md }}>
+      <View style={{ width: "100%", gap: theme.spacing.md }}>
         {/* Email Field */}
         <FormField
           label="Email address"
@@ -107,7 +107,7 @@ const LoginSimpleScreenContent: React.FC = () => {
           onPress={handleLogin}
           loading={loading}
           disabled={loading}
-          variant="black"
+          variant="primary"
           style={{ marginTop: theme.spacing.sm }}
         />
 
@@ -135,12 +135,12 @@ const LoginSimpleScreenContent: React.FC = () => {
           <SocialButton
             title="Continue with Apple"
             onPress={() => console.log("Apple login")}
-            icon={require("../../../assets/apple-icon.png")}
+            iconLibrary="apple"
           />
           <SocialButton
             title="Continue with Google"
             onPress={() => console.log("Google login")}
-            icon={require("../../../assets/google-icon.png")}
+            iconLibrary="google"
           />
         </View>
       </View>
@@ -183,13 +183,6 @@ const LoginSimpleScreenContent: React.FC = () => {
         </Pressable>
       </View>
     </ScrollView>
-  );
-};
-
-export const LoginSimpleScreen: React.FC = () => {
-  return (
-    <ThemeProvider theme={lightTheme}>
-      <LoginSimpleScreenContent />
-    </ThemeProvider>
+    </SafeAreaView>
   );
 };
