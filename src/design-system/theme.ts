@@ -185,6 +185,18 @@ export const createTheme = (
     typography: {
       ...midnightTheme.typography,
       ...(overrides.typography ?? {}),
+      heading: {
+        ...midnightTheme.typography.heading,
+        ...(overrides.typography?.heading ?? {}),
+      },
+      body: {
+        ...midnightTheme.typography.body,
+        ...(overrides.typography?.body ?? {}),
+      },
+      label: {
+        ...midnightTheme.typography.label,
+        ...(overrides.typography?.label ?? {}),
+      },
     },
   };
 };

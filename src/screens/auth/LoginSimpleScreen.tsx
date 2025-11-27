@@ -10,6 +10,13 @@ import { useTheme } from "../../design-system/theme";
 
 export const LoginSimpleScreen: React.FC = () => {
   const theme = useTheme();
+  const { typography } = theme;
+  const headingFontFamily =
+    typography.heading.fontFamily ?? typography.fontFamilyBase;
+  const bodyFontFamily =
+    typography.body.fontFamily ?? typography.fontFamilyBase;
+  const labelFontFamily =
+    typography.label.fontFamily ?? typography.fontFamilyBase;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -58,14 +65,24 @@ export const LoginSimpleScreen: React.FC = () => {
         <DAText
           variant="heading"
           style={{
-            fontSize: 30,
+            fontFamily: headingFontFamily,
+            fontSize: typography.heading.fontSize * 1.25, // Slightly larger for main title
+            lineHeight: (typography.heading.lineHeight ?? typography.heading.fontSize * 1.25) * 1.25,
             fontWeight: "700",
             color: theme.colors.text,
           }}
         >
           DesignAgent
         </DAText>
-        <DAText variant="body" color="muted" style={{ fontSize: 16 }}>
+        <DAText
+          variant="body"
+          color="muted"
+          style={{
+            fontFamily: bodyFontFamily,
+            fontSize: typography.body.fontSize,
+            lineHeight: typography.body.lineHeight ?? typography.body.fontSize * 1.4,
+          }}
+        >
           Login to your account
         </DAText>
       </View>
@@ -117,8 +134,10 @@ export const LoginSimpleScreen: React.FC = () => {
             <DAText
               variant="body"
               style={{
+                fontFamily: bodyFontFamily,
+                fontSize: typography.body.fontSize,
+                lineHeight: typography.body.lineHeight ?? typography.body.fontSize * 1.4,
                 textDecorationLine: "underline",
-                fontSize: 16,
                 color: theme.colors.text,
               }}
             >
@@ -161,8 +180,10 @@ export const LoginSimpleScreen: React.FC = () => {
           <DAText
             variant="body"
             style={{
+              fontFamily: bodyFontFamily,
+              fontSize: typography.body.fontSize,
+              lineHeight: typography.body.lineHeight ?? typography.body.fontSize * 1.4,
               textDecorationLine: "underline",
-              fontSize: 16,
               color: theme.colors.text,
             }}
           >
@@ -173,8 +194,10 @@ export const LoginSimpleScreen: React.FC = () => {
           <DAText
             variant="body"
             style={{
+              fontFamily: bodyFontFamily,
+              fontSize: typography.body.fontSize,
+              lineHeight: typography.body.lineHeight ?? typography.body.fontSize * 1.4,
               textDecorationLine: "underline",
-              fontSize: 16,
               color: theme.colors.text,
             }}
           >

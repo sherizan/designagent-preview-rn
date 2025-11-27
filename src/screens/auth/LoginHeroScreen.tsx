@@ -9,6 +9,13 @@ import { DAText } from "../../design-system/components/primitives/Text";
 
 export const LoginHeroScreen: React.FC = () => {
   const theme = useTheme();
+  const { typography } = theme;
+  const headingFontFamily =
+    typography.heading.fontFamily ?? typography.fontFamilyBase;
+  const bodyFontFamily =
+    typography.body.fontFamily ?? typography.fontFamilyBase;
+  const labelFontFamily =
+    typography.label.fontFamily ?? typography.fontFamilyBase;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +64,15 @@ export const LoginHeroScreen: React.FC = () => {
           left: theme.spacing.lg,
         }}
       >
-        <DAText variant="heading" style={{ fontSize: 20, fontWeight: "600" }}>
+        <DAText
+          variant="heading"
+          style={{
+            fontFamily: headingFontFamily,
+            fontSize: typography.heading.fontSize * 0.83, // Slightly smaller for logo
+            lineHeight: (typography.heading.lineHeight ?? typography.heading.fontSize * 1.25) * 0.83,
+            fontWeight: "600",
+          }}
+        >
           DesignAgent
         </DAText>
       </View>

@@ -65,16 +65,30 @@ export const baseIconSize = {
   lg: 24,
 } as const;
 
+import type { TypographySlot } from "./types";
+
 export const baseTypography = {
-  fontFamily: "Urbanist",
-  bodyScale: 1,
-  headingScale: 1.15,
-} as const;
+  fontFamilyBase: "Urbanist",
+  heading: {
+    fontFamily: undefined, // if undefined, use fontFamilyBase
+    fontSize: 24,
+    lineHeight: 32,
+  } as TypographySlot,
+  body: {
+    fontFamily: undefined,
+    fontSize: 15,
+    lineHeight: 22,
+  } as TypographySlot,
+  label: {
+    fontFamily: undefined,
+    fontSize: 12,
+    lineHeight: 16,
+  } as TypographySlot,
+};
 
 export type Spacing = typeof baseSpacing;
 export type Radius = typeof baseRadius;
 export type BorderWidth = typeof baseBorderWidth;
 export type ButtonHeight = typeof baseButtonHeight;
 export type IconSize = typeof baseIconSize;
-export type Typography = typeof baseTypography;
 

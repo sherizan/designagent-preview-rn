@@ -52,7 +52,7 @@ export interface IconProps {
    */
   library: IconLibrary;
   /**
-   * Icon size in pixels (defaults to 20 * theme.typography.bodyScale)
+   * Icon size in pixels (defaults to theme.typography.body.fontSize)
    */
   size?: number;
   /**
@@ -65,7 +65,7 @@ export interface IconProps {
 export const Icon: React.FC<IconProps> = ({ name, library, size, color }) => {
   const theme = useTheme();
   const finalColor = color ?? theme.colors.text;
-  const finalSize = size ?? 20 * theme.typography.bodyScale;
+  const finalSize = size ?? theme.typography.body.fontSize;
 
   // For native platforms, use Image assets for brand icons
   if (Platform.OS !== "web") {
@@ -73,7 +73,7 @@ export const Icon: React.FC<IconProps> = ({ name, library, size, color }) => {
       case "google":
         return (
           <Image
-            source={require("../../../assets/google-icon.png")}
+            source={require("../../../../assets/google-icon.png")}
             style={{ width: finalSize, height: finalSize } as ImageStyle}
             resizeMode="contain"
           />
@@ -82,7 +82,7 @@ export const Icon: React.FC<IconProps> = ({ name, library, size, color }) => {
       case "apple":
         return (
           <Image
-            source={require("../../../assets/apple-icon.png")}
+            source={require("../../../../assets/apple-icon.png")}
             style={{ width: finalSize, height: finalSize } as ImageStyle}
             resizeMode="contain"
           />

@@ -19,41 +19,52 @@ export const DAText: React.FC<DATextProps> = ({
 }) => {
   const theme = useTheme();
 
+  const { typography } = theme;
+  
   const getFontFamily = () => {
-    // On web, use system fonts as fallback since Expo fonts work differently
-    if (Platform.OS === "web") {
-      return "Urbanist, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    switch (variant) {
+      case "heading":
+      case "eyebrow":
+        return (
+          typography.heading.fontFamily ??
+          typography.fontFamilyBase
+        );
+      case "caption":
+        return (
+          typography.label.fontFamily ??
+          typography.fontFamilyBase
+        );
+      case "body":
+      default:
+        return (
+          typography.body.fontFamily ??
+          typography.fontFamilyBase
+        );
     }
-    // On native, use Expo font keys
-    if (variant === "heading" || variant === "eyebrow") {
-      return "Urbanist_600SemiBold";
-    }
-    return "Urbanist_400Regular";
   };
 
   const getFontSize = () => {
     switch (variant) {
       case "heading":
-        return 26 * theme.typography.headingScale; // ~30px
+        return typography.heading.fontSize;
       case "eyebrow":
-        return 12;
       case "caption":
-        return 12;
+        return typography.label.fontSize;
       case "body":
       default:
-        return 15; // ~15px
+        return typography.body.fontSize;
     }
   };
 
   const getLineHeight = () => {
     switch (variant) {
       case "heading":
-        return 32;
+        return typography.heading.lineHeight ?? typography.heading.fontSize * 1.25;
       case "caption":
-        return 16;
+        return typography.label.lineHeight ?? typography.label.fontSize * 1.3;
       case "body":
       default:
-        return 22;
+        return typography.body.lineHeight ?? typography.body.fontSize * 1.4;
     }
   };
 

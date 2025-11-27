@@ -77,11 +77,10 @@ export const TextInput: React.FC<TextInputProps> = ({
             paddingHorizontal: pill ? theme.spacing.xl : theme.spacing.md,
             paddingRight: showPasswordToggle ? 50 : undefined,
             color: theme.colors.text,
-            fontSize: 16,
+            fontSize: theme.typography.body.fontSize,
+            lineHeight: theme.typography.body.lineHeight ?? theme.typography.body.fontSize * 1.4,
             height: pill ? baseButtonHeight.lg : undefined,
-            fontFamily: Platform.OS === "web" 
-              ? "Urbanist, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-              : "Urbanist_400Regular",
+            fontFamily: theme.typography.body.fontFamily ?? theme.typography.fontFamilyBase,
           }}
           {...props}
         />

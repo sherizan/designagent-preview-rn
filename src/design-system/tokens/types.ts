@@ -1,3 +1,9 @@
+export type TypographySlot = {
+  fontFamily?: string;
+  fontSize: number;
+  lineHeight?: number;
+};
+
 export type DesignAgentTheme = {
   colors: {
     background: string;
@@ -25,9 +31,14 @@ export type DesignAgentTheme = {
     full: number;
   };
   typography: {
-    fontFamily: string;
-    bodyScale: number;
-    headingScale: number;
+    /**
+     * Base font family to fall back to when a slot doesn't define its own.
+     * Example: "System", "SF Pro Text", etc.
+     */
+    fontFamilyBase: string;
+    heading: TypographySlot;
+    body: TypographySlot;
+    label: TypographySlot;
   };
 };
 
