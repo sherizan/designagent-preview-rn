@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, ButtonVariant } from "@/design-system/components/Button";
-import { InputField, InputVariant } from "@/design-system/components/InputField";
 import { DAText } from "@/design-system/components/primitives/Text";
 import { Surface } from "@/design-system/components/primitives/Surface";
 import { Stack } from "@/design-system/components/primitives/Stack";
@@ -16,7 +15,6 @@ import { FormField } from "@/design-system/components/patterns/FormField";
 
 export type ComponentSlug =
   | "button"
-  | "input-field"
   | "text"
   | "surface"
   | "stack"
@@ -47,21 +45,6 @@ const ButtonPreview: React.FC<{ variant: string }> = ({ variant }) => {
       label={`Continue (${v})`}
       variant={v}
       onPress={() => {}}
-    />
-  );
-};
-
-// InputField preview component
-const InputFieldPreview: React.FC<{ variant: string }> = ({ variant }) => {
-  const [value, setValue] = useState("");
-  const v = (variant || "outline") as InputVariant;
-  return (
-    <InputField
-      label="Email"
-      placeholder="you@example.com"
-      variant={v}
-      value={value}
-      onChangeText={setValue}
     />
   );
 };
@@ -104,14 +87,30 @@ const StackPreview: React.FC<{ variant: string }> = ({ variant }) => {
 // TextInput preview component
 const TextInputPreview: React.FC<{ variant: string }> = ({ variant }) => {
   const [value, setValue] = useState("");
-  const pill = variant === "pill";
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  
+  if (variant === "minimal") {
+    return (
+      <TextInput
+        variant="minimal"
+        emailValue={emailValue}
+        onEmailChangeText={setEmailValue}
+        passwordValue={passwordValue}
+        onPasswordChangeText={setPasswordValue}
+      />
+    );
+  }
+  
+  // Handle all other variants: default, pill, outline, solid, underline
+  const variantKey = variant || "default";
   return (
     <TextInput
       label="Email"
       placeholder="you@example.com"
       value={value}
       onChangeText={setValue}
-      pill={pill}
+      variant={variantKey as "default" | "pill" | "outline" | "solid" | "underline"}
     />
   );
 };
@@ -195,11 +194,6 @@ const componentPreviews: ComponentPreviewEntry[] = [
     Component: ButtonPreview,
   },
   {
-    slug: "input-field",
-    supportedVariants: ["outline", "solid", "underline"],
-    Component: InputFieldPreview,
-  },
-  {
     slug: "text",
     supportedVariants: ["heading", "body", "label", "caption"],
     Component: TextPreview,
@@ -216,7 +210,7 @@ const componentPreviews: ComponentPreviewEntry[] = [
   },
   {
     slug: "text-input",
-    supportedVariants: ["default", "pill"],
+    supportedVariants: ["default", "pill", "minimal", "outline", "solid", "underline"],
     Component: TextInputPreview,
   },
   {

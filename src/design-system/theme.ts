@@ -80,7 +80,21 @@ export const DesignAgentProvider: React.FC<DesignAgentProviderProps> = ({
   themeOverride,
 }) => {
   // If themeOverride is provided, skip family logic and use that directly.
+  // However, we still need to respect the mode prop for consistency.
   if (themeOverride) {
+    // Resolve mode even for custom themes
+    let resolvedMode: "light" | "dark";
+    if (mode === "system") {
+      const systemColorScheme = Appearance.getColorScheme();
+      if (systemColorScheme === "light" || systemColorScheme === "dark") {
+        resolvedMode = systemColorScheme;
+      } else {
+        resolvedMode = "dark"; // Default fallback
+      }
+    } else {
+      resolvedMode = mode;
+    }
+    
     const overrideFamily: ThemeFamily = {
       id: "override",
       label: "Override Theme",
@@ -91,7 +105,7 @@ export const DesignAgentProvider: React.FC<DesignAgentProviderProps> = ({
     return React.createElement(
       ThemeContext.Provider,
       {
-        value: { theme: themeOverride, family: overrideFamily, mode: "dark" },
+        value: { theme: themeOverride, family: overrideFamily, mode: resolvedMode },
       },
       children
     );

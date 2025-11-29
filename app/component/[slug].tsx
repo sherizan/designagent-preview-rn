@@ -7,14 +7,7 @@ import {
   DesignAgentProviderMode,
 } from "@/design-system/theme";
 import { useTheme } from "@/design-system/theme";
-import { ThemeKey } from "@/design-system/themes/registry";
-import {
-  getThemeKeyFromQuery,
-  getModeFromQuery,
-} from "@/utils/themeQuery";
-
-const DEFAULT_THEME: ThemeKey = "midnight";
-const DEFAULT_MODE: DesignAgentProviderMode = "dark";
+import { resolveThemeFromQuery } from "@/design-system/themes/registry";
 
 // Wrapper component to access theme inside DesignAgentProvider
 const ComponentPreviewContent: React.FC<{
@@ -66,8 +59,11 @@ export default function ComponentPreviewRoute() {
   const params = useLocalSearchParams<{
     slug?: string | string[];
     variant?: string | string[];
-    theme?: string | string[];
+    themeId?: string | string[];
     mode?: string | string[];
+    customTheme?: string | string[];
+    // Backwards compatibility
+    theme?: string | string[];
   }>();
 
   // Extract slug from URL pathname (most reliable for web)
@@ -123,12 +119,17 @@ export default function ComponentPreviewRoute() {
     );
   }
 
-  const themeKey = getThemeKeyFromQuery(params, DEFAULT_THEME);
-  const mode = getModeFromQuery(params, DEFAULT_MODE);
+  // Resolve theme from query params (supports both themeId and theme for backwards compatibility)
+  const { themeId, theme, mode, customTheme } = resolveThemeFromQuery(params);
   const variant = variantParam || entry.supportedVariants[0];
 
   return (
-    <DesignAgentProvider key={`${themeKey}-${mode}`} themeId={themeKey} mode={mode}>
+    <DesignAgentProvider
+      key={`${themeId}-${mode}-${customTheme ? "custom" : "base"}`}
+      themeId={customTheme ? undefined : themeId}
+      mode={mode}
+      themeOverride={customTheme}
+    >
       <ComponentPreviewContent slug={slug} variant={variant} />
     </DesignAgentProvider>
   );

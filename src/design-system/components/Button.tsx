@@ -7,7 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
-import { useTheme } from "@/design-system/theme";
+import { useTheme, useThemeMeta } from "@/design-system/theme";
 
 export type ButtonVariant =
   | "primary"
@@ -41,6 +41,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const theme = useTheme();
   const { typography } = theme;
+  const { mode } = useThemeMeta();
 
   const labelFont =
     typography.label.fontFamily ?? typography.fontFamilyBase;
@@ -60,6 +61,31 @@ export const Button: React.FC<ButtonProps> = ({
     opacity: isDisabled ? 0.6 : 1,
   };
 
+  // Helper to determine if a color is dark (for contrast calculation)
+  const isDarkColor = (color: string): boolean => {
+    // Remove # if present
+    const hex = color.replace("#", "");
+    // Convert to RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    // Calculate luminance
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance < 0.5;
+  };
+
+  // Get contrasting text color for primary buttons
+  // In dark mode, use white text; in light mode, use black text (or contrast-based)
+  const getContrastTextColor = (backgroundColor: string): string => {
+    if (mode === "dark") {
+      // In dark mode, always use white text for better contrast
+      return "#FFFFFF";
+    } else {
+      // In light mode, use contrast-based color
+      return isDarkColor(backgroundColor) ? "#FFFFFF" : "#000000";
+    }
+  };
+
   let variantStyle: ViewStyle = {};
   let textColor = theme.colors.text;
 
@@ -68,17 +94,12 @@ export const Button: React.FC<ButtonProps> = ({
       variantStyle = {
         backgroundColor: theme.colors.primary,
       };
-      textColor = "#000"; // assume light text on primary. Wait, theme.colors.primary is usually an accent color. 
-      // If primary is dark, text should be light. If primary is light, text dark.
-      // Assuming existing theme structure, primary usually needs contrasting text.
-      // In the prompt "textColor = '#000'; // assume light text on primary" -> this comment says light text but assigns #000 (black). 
-      // If primary is bright (like lime green), black is good. If primary is dark blue, white is good.
-      // The comment says "assume light text on primary" but assigns black. 
-      // Let's look at `midnightTheme`.
+      // Use primaryForeground color for text
+      textColor = theme.colors.primaryForeground;
       break;
     case "secondary":
       variantStyle = {
-        backgroundColor: theme.colors.surfaceMuted, // or surface? Prompt says surfaceMuted.
+        backgroundColor: theme.colors.surfaceMuted,
       };
       textColor = theme.colors.text;
       break;
@@ -98,10 +119,11 @@ export const Button: React.FC<ButtonProps> = ({
       break;
     case "minimal":
       variantStyle = {
-        backgroundColor: theme.colors.surface,
+        backgroundColor: theme.colors.primary,
         borderRadius: theme.radius.md,
       };
-      textColor = theme.colors.text;
+      // Use primaryForeground color for text
+      textColor = theme.colors.primaryForeground;
       break;
     default:
       break;

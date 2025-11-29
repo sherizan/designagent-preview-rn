@@ -9,13 +9,18 @@ export type DesignAgentTheme = {
     background: string;
     surface: string;
     surfaceMuted: string;
+    surfaceAlt?: string;
     primary: string;
+    primaryForeground: string;
     primarySoft: string;
     text: string;
     textMuted: string;
     danger: string;
     border: string;
     inputBackground: string;
+    accent: string;
+    success: string;
+    warning: string;
   };
   spacing: {
     xs: number;

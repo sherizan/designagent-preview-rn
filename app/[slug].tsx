@@ -3,23 +3,19 @@ import { Redirect, useLocalSearchParams } from "expo-router";
 import { screens, ScreenKey } from "../src/screens/registry";
 import {
   DesignAgentProvider,
-  DesignAgentProviderMode,
 } from "../src/design-system/theme";
-import { ThemeKey } from "../src/design-system/themes/registry";
-import {
-  getThemeKeyFromQuery,
-  getModeFromQuery,
-} from "../src/utils/themeQuery";
+import { resolveThemeFromQuery } from "../src/design-system/themes/registry";
 
 const DEFAULT_SCREEN: ScreenKey = "login-simple";
-const DEFAULT_THEME: ThemeKey = "midnight";
-const DEFAULT_MODE: DesignAgentProviderMode = "dark";
 
 export default function ScreenRoute() {
   const params = useLocalSearchParams<{
     slug?: string | string[];
-    theme?: string | string[];
+    themeId?: string | string[];
     mode?: string | string[];
+    customTheme?: string | string[];
+    // Backwards compatibility
+    theme?: string | string[];
   }>();
 
   // Handle expo-router params which can be string or string[]
@@ -35,11 +31,16 @@ export default function ScreenRoute() {
 
   const ActiveScreen = screens[screenKey];
 
-  const themeKey = getThemeKeyFromQuery(params, DEFAULT_THEME);
-  const mode = getModeFromQuery(params, DEFAULT_MODE);
+  // Resolve theme from query params (supports both themeId and theme for backwards compatibility)
+  const { themeId, mode, customTheme } = resolveThemeFromQuery(params);
 
   return (
-    <DesignAgentProvider key={`${themeKey}-${mode}`} themeId={themeKey} mode={mode}>
+    <DesignAgentProvider
+      key={`${themeId}-${mode}-${customTheme ? "custom" : "base"}`}
+      themeId={customTheme ? undefined : themeId}
+      mode={mode}
+      themeOverride={customTheme}
+    >
       <ActiveScreen />
     </DesignAgentProvider>
   );

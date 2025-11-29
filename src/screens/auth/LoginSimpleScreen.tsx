@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, InputField } from "@/design-system/components";
+import { Button } from "@/design-system/components";
+import { TextInput } from "@/design-system/components/primitives/TextInput";
 import { SocialButton } from "../../design-system/components/primitives/SocialButton";
 import { Divider } from "../../design-system/components/primitives/Divider";
 import { DAText } from "../../design-system/components/primitives/Text";
@@ -88,7 +89,7 @@ export const LoginSimpleScreen: React.FC = () => {
         {/* Form */}
         <View style={{ width: "100%", gap: theme.spacing.md }}>
           {/* Email Field */}
-          <InputField
+          <TextInput
             label="Email address"
             value={email}
             onChangeText={(text) => {
@@ -101,7 +102,7 @@ export const LoginSimpleScreen: React.FC = () => {
           />
 
           {/* Password Field */}
-          <InputField
+          <TextInput
             label="Password"
             value={password}
             onChangeText={(text) => {

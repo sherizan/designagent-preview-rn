@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button, InputField } from "@/design-system/components";
+import { Button } from "@/design-system/components";
+import { TextInput } from "@/design-system/components/primitives/TextInput";
 import { DAText } from "../../design-system/components/primitives/Text";
 import { useTheme } from "../../design-system/theme";
 
@@ -73,31 +74,20 @@ export const LoginMinimalScreen: React.FC = () => {
 
         {/* Form */}
         <View style={{ width: "100%", maxWidth: 400, gap: theme.spacing.lg }}>
-          {/* Email Field */}
-          <InputField
-            label="Email"
-            value={email}
-            onChangeText={(text) => {
+          {/* Minimal TextInput (Email + Password combined) */}
+          <TextInput
+            variant="minimal"
+            emailValue={email}
+            onEmailChangeText={(text) => {
               setEmail(text);
               setError(null);
             }}
-            placeholder="your@email.com"
-            keyboardType="email-address"
-            variant="underline"
-          />
-
-          {/* Password Field */}
-          <InputField
-            label="Password"
-            value={password}
-            onChangeText={(text) => {
+            passwordValue={password}
+            onPasswordChangeText={(text) => {
               setPassword(text);
               setError(null);
             }}
-            placeholder="password"
-            secureTextEntry
             errorText={error || undefined}
-            variant="underline"
           />
 
           {/* Log in Button */}

@@ -7,16 +7,22 @@ import { DesignAgentProviderMode } from "@/design-system/theme";
 
 /**
  * Extracts theme key from query parameters.
+ * Supports both themeId (new) and theme (legacy) for backwards compatibility.
  * On web, reads directly from URL for more reliable query param reading.
  * Falls back to Expo Router params if URL params are not available.
  */
 export function getThemeKeyFromQuery(
   params: {
+    themeId?: string | string[];
     theme?: string | string[];
   },
   defaultTheme: ThemeKey = "midnight"
 ): ThemeKey {
-  const themeParamFromRouter = Array.isArray(params.theme)
+  // Prefer themeId, fallback to theme for backwards compatibility
+  const themeIdParam = Array.isArray(params.themeId)
+    ? params.themeId[0]
+    : (params.themeId as string | undefined);
+  const themeParam = Array.isArray(params.theme)
     ? params.theme[0]
     : (params.theme as string | undefined);
 
@@ -24,6 +30,11 @@ export function getThemeKeyFromQuery(
   if (Platform.OS === "web" && typeof window !== "undefined") {
     try {
       const urlParams = new URLSearchParams(window.location.search);
+      // Try themeId first, then theme for backwards compatibility
+      const themeIdFromUrl = urlParams.get("themeId") as ThemeKey | null;
+      if (themeIdFromUrl && themeIdFromUrl in designAgentThemes) {
+        return themeIdFromUrl;
+      }
       const themeFromUrl = urlParams.get("theme") as ThemeKey | null;
       if (themeFromUrl && themeFromUrl in designAgentThemes) {
         return themeFromUrl;
@@ -34,8 +45,11 @@ export function getThemeKeyFromQuery(
   }
 
   // Fallback to router params
-  if (themeParamFromRouter && themeParamFromRouter in designAgentThemes) {
-    return themeParamFromRouter as ThemeKey;
+  if (themeIdParam && themeIdParam in designAgentThemes) {
+    return themeIdParam as ThemeKey;
+  }
+  if (themeParam && themeParam in designAgentThemes) {
+    return themeParam as ThemeKey;
   }
 
   return defaultTheme;

@@ -42,8 +42,8 @@ export const baseSpacing = {
 
 export const baseRadius = {
   sm: 6,
-  md: 10,
-  lg: 18,
+  md: 12,
+  lg: 20,
   full: 999,
 } as const;
 
@@ -76,8 +76,8 @@ export const baseTypography = {
   } as TypographySlot,
   body: {
     fontFamily: undefined,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
   } as TypographySlot,
   label: {
     fontFamily: undefined,
