@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import { useLocalSearchParams, useSegments } from "expo-router";
 import { findComponentPreview } from "@/components/preview/componentRegistry";
 import {
@@ -70,13 +70,29 @@ export default function ComponentPreviewRoute() {
     mode?: string | string[];
   }>();
 
-  // Extract slug from route segments or params
-  // In Expo Router, for /component/[slug], the slug should be in segments or params
+  // Extract slug from URL pathname (most reliable for web)
   let slug: string | undefined;
   
-  // Try to get slug from segments first (route params)
-  if (segments.length >= 2 && segments[0] === "component") {
-    slug = segments[1];
+  if (Platform.OS === "web" && typeof window !== "undefined") {
+    try {
+      // Extract slug from URL path like /component/button
+      const pathname = window.location.pathname;
+      const match = pathname.match(/^\/component\/([^\/\?]+)/);
+      if (match && match[1]) {
+        slug = match[1];
+      }
+    } catch (error) {
+      // Fall through to other methods
+    }
+  }
+  
+  // Try to get slug from segments (route params)
+  if (!slug && segments.length >= 2 && segments[0] === "component") {
+    const segmentSlug = segments[1];
+    // Only use if it's not the literal "[slug]" string
+    if (segmentSlug && segmentSlug !== "[slug]") {
+      slug = segmentSlug;
+    }
   }
   
   // Fallback to params (query params or route params)
